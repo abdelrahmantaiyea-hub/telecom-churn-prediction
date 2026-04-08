@@ -1,0 +1,2 @@
+[ 2026-04-08 17:58:57,606 ] 31 root - INFO - Started the Data Ingestion process.
+[ 2026-04-08 17:58:57,626 ] 20 root - ERROR - Error occurred in script: [D:\Data Analysis Projects\Cell2cell project\Cell2Cell Project\src\components\data_ingestion.py] at line: [34] message: [(1045, "Access denied for user 'PC'@'localhost' (using password: NO)")]

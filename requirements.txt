@@ -4,6 +4,7 @@ seaborn
 matplotlib
 scikit-learn
 python-dotenv
+pymysql
 sqlalchemy
 mysql-connector-python
--e . 
+-e .
