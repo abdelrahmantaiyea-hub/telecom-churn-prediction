@@ -1,0 +1,9 @@
+[ 2026-04-15 20:37:39,953 ] 170 root - INFO - Data Transformation Started !!!
+[ 2026-04-15 20:37:40,089 ] 177 root - INFO - Reading train and test data completed
+[ 2026-04-15 20:37:40,089 ] 83 root - INFO - Entered the Data tranformer object method.
+[ 2026-04-15 20:37:40,089 ] 87 root - INFO - Starting Pipeline construction with 4 specific lanes
+[ 2026-04-15 20:37:40,089 ] 104 root - INFO - Transformers Initialized
+[ 2026-04-15 20:37:40,089 ] 145 root - INFO - Assembling individual pipelines into ColumnTransformer.
+[ 2026-04-15 20:37:40,089 ] 157 root - INFO - ColumnTransformer object created successfully.
+[ 2026-04-15 20:37:40,089 ] 193 root - INFO - Applying preprocessing object on training and testing dataframes.
+[ 2026-04-15 20:37:40,105 ] 20 root - ERROR - Error occurred in script: [D:\Data Analysis Projects\Cell2cell project\Cell2Cell Project\src\components\data_transformation.py] at line: [196] message: [cannot unpack non-iterable FunctionTransformer object]

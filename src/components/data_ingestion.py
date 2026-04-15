@@ -20,9 +20,9 @@ class DataIngestionConfig:
     Configuration class to define where our artifacts will be stored.
     Using os.path.join ensures this works on Windows and Linux (Production).
     """
-    train_data_path: str = os.path.join('artifacts', "train.csv")
-    test_data_path: str = os.path.join('artifacts', "test.csv")
-    raw_data_path: str = os.path.join('artifacts', "data_full.csv")
+    train_data_path: str = os.path.join('artifacts', "data", "train.csv")
+    test_data_path: str = os.path.join('artifacts',"data", "test.csv")
+    raw_data_path: str = os.path.join('artifacts',"data", "data_full.csv")
 
 class DataIngestion:
     def __init__(self):
