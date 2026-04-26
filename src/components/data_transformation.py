@@ -2,7 +2,7 @@ import os
 import sys
 import pandas as pd
 import numpy as np
-
+import json
 
 from dataclasses import dataclass
 from sklearn.preprocessing import StandardScaler, RobustScaler, OneHotEncoder
@@ -12,7 +12,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import FunctionTransformer
 
-
+from src.components.preprocessing import cap_outliers, handle_handset_price
 from src.exception import CustomException
 from src.logger import logging
 from src.utils import save_object
@@ -26,31 +26,7 @@ class DataTransformationConfig:
     train_array_file_path: str = os.path.join("artifacts", "data", "train_array.npy")
     test_array_file_path: str = os.path.join("artifacts", "data", "test_array.npy")
    
-
-def cap_outliers(X):
-    try:
-        X_copy = np.copy(X) # to not override the previous data
-        # Calculate limits for each column (axis=0)
-        lower_limit = np.percentile(X_copy, 1, axis=0)
-        upper_limit = np.percentile(X_copy, 99, axis=0) 
-        return np.clip(X_copy, a_min=lower_limit, a_max=upper_limit)       
-    except Exception as e:
-        raise CustomException(e, sys)
-    
-
-def handle_handset_price(X):
-    try:
-        
-        df = pd.DataFrame(X)
-        
-      # run throught lying zeros and converts the object ones
-        for col in df.columns:
-            # Convert to numeric, turn 'unknown' to NaN, then NaN to 0
-            df[col] = pd.to_numeric(df[col], errors='coerce').fillna(0)
-            
-        return df
-    except Exception as e:
-        raise CustomException(e, sys)    
+ 
     
 class DataTransformation:
     
@@ -107,7 +83,7 @@ class DataTransformation:
             # LANE 1: THE LYING ZEROS (Standard Scaling + 0-Imputation)
 
             lying_zero_pipeline = Pipeline(steps=[
-                ("handler" , FunctionTransformer(handle_handset_price)),
+                ("handler" , FunctionTransformer(handle_handset_price, feature_names_out='one-to-one')),
                 ("imputer", SimpleImputer(strategy="median", missing_values=0, add_indicator=True)),
                 ("scaler", StandardScaler())
                 ])
@@ -116,7 +92,7 @@ class DataTransformation:
             
             extreme_messy_pipeline = Pipeline(steps=[
                 ("imputer", SimpleImputer(strategy="median", add_indicator=True)),
-                ("capper", FunctionTransformer(cap_outliers)),
+                ("capper", FunctionTransformer(cap_outliers, feature_names_out='one-to-one')),
                 ("scaler", RobustScaler())
             ])
 
@@ -124,7 +100,7 @@ class DataTransformation:
 
             extreme_clean_pipeline = Pipeline(steps=[
                 ("imputer", SimpleImputer(strategy="median", add_indicator=False)),
-                ("capper", FunctionTransformer(cap_outliers)),
+                ("capper", FunctionTransformer(cap_outliers, feature_names_out='one-to-one')),
                 ("scaler", RobustScaler())
             ])
 
@@ -183,6 +159,13 @@ class DataTransformation:
 
             target_column_name = "churn"
 
+            target_map = {'Yes': 1, 'No': 0}
+
+            logging.info("Mapping target column to binary integers")
+            
+            train_df[target_column_name] = train_df[target_column_name].map(target_map)
+            test_df[target_column_name] = test_df[target_column_name].map(target_map)
+            
             # 3. Separate Features (X) and Target (y)
             
             input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
@@ -198,6 +181,14 @@ class DataTransformation:
 
             input_feature_test_arr = preprocessing_obj.transform(input_feature_test_df)
 
+
+            final_feature_names = preprocessing_obj.get_feature_names_out()
+
+            names_path = os.path.join("artifacts", "data", "feature_names.json")
+            
+            with open(names_path, 'w') as f:
+                json.dump(list(final_feature_names), f)
+            
             # 5. Combine X and y into a single array for the Model Trainer
 
             train_arr = np.c_[input_feature_train_arr, np.array(target_feature_train_df)]
@@ -225,28 +216,3 @@ class DataTransformation:
         except Exception as e:
             raise CustomException(e, sys)        
 
-if __name__ == "__main__":
-    # 1. Define your paths (Make sure these CSVs actually exist in your folder!)
-    train_data_path = "artifacts/data/train.csv"
-    test_data_path = "artifacts/data/test.csv"
-    
-    try:
-        # 2. Instantiate the DataTransformation class
-        data_transformer = DataTransformation()
-        
-        # 3. Pull the trigger (Run the Muscle Method)
-        print("Starting Data Transformation Test...")
-        train_array, test_array, preprocessor_path = data_transformer.initiate_data_transformation(
-            train_path=train_data_path,
-            test_path=test_data_path
-        )
-        
-        # 4. Print the "Receipts" to prove it worked
-        print("\n=== TEST RESULTS ===")
-        print(f"✅ Train Array Shape: {train_array.shape}")
-        print(f"✅ Test Array Shape:  {test_array.shape}")
-        print(f"✅ Preprocessor File: {preprocessor_path}")
-        print("====================\n")
-        
-    except Exception as e:
-        print(f"❌ TEST FAILED: {e}")

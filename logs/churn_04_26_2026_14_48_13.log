@@ -1,0 +1,6 @@
+[ 2026-04-26 14:48:13,172 ] 5 root - INFO - Loading the arrays
+[ 2026-04-26 14:48:13,241 ] 15 root - INFO - Successfully loaded and sliced data.
+[ 2026-04-26 14:48:13,258 ] 6 root - INFO - Training Logistic Regression Baseline
+[ 2026-04-26 14:48:13,819 ] 13 root - INFO - Baseline Logistic Regression Training Complete
+[ 2026-04-26 14:48:14,148 ] 10 root - INFO - Training Random Forest Baseline
+[ 2026-04-26 14:48:19,545 ] 12 root - INFO - Training XGBoost Baseline

@@ -4,25 +4,18 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
-
 from src.exception import CustomException
 from src.logger import logging
-import pymysql
+from sqlalchemy import create_engine
 from dotenv import load_dotenv
 
 load_dotenv()
 
-
-
 @dataclass
 class DataIngestionConfig:
-    """
-    Configuration class to define where our artifacts will be stored.
-    Using os.path.join ensures this works on Windows and Linux (Production).
-    """
     train_data_path: str = os.path.join('artifacts', "data", "train.csv")
-    test_data_path: str = os.path.join('artifacts',"data", "test.csv")
-    raw_data_path: str = os.path.join('artifacts',"data", "data_full.csv")
+    test_data_path: str = os.path.join('artifacts', "data", "test.csv")
+    raw_data_path: str = os.path.join('artifacts', "data", "data_full.csv")
 
 class DataIngestion:
     def __init__(self):
@@ -31,30 +24,30 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("Started the Data Ingestion process.")
         try:
-            #  Connect to MySQL using credentials from .env
-            mydb = mydb = pymysql.connect(
-                host=os.getenv("MYSQL_HOST"),
-                user=os.getenv("MYSQL_USER"),
-                password=os.getenv("MYSQL_PASSWORD"),
-                database=os.getenv("MYSQL_DATABASE")
+            # Constructing the SQLAlchemy connection URI
+            conn_uri = (
+                f"mysql+pymysql://{os.getenv('MYSQL_USER')}:"
+                f"{os.getenv('MYSQL_PASSWORD')}@{os.getenv('MYSQL_HOST')}/"
+                f"{os.getenv('MYSQL_DATABASE')}"
             )
             
-            #  Reading from the SQL View 
-            query = "SELECT * FROM train_data_final" 
-            df = pd.read_sql(query, mydb)
+            # Creating the engine for modern database interaction
+            engine = create_engine(conn_uri)
             
-            logging.info('Read the dataset as dataframe from MySQL View')
+            query = "SELECT * FROM train_data_final" 
+            
+            # Using context manager to ensure connection is properly closed
+            with engine.connect() as connection:
+                df = pd.read_sql(query, connection)
+            
+            logging.info('Read the dataset as dataframe via SQLAlchemy Engine')
 
-            # Create the 'artifacts' directory 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
 
-            #  Save the full raw data first
             df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
 
             logging.info("Train test split initiated")
             
-            #  The Split: 80/20 with Stratification
-            # This ensures both sets have exactly ~28.8% churn
             train_set, test_set = train_test_split(
                 df, 
                 test_size=0.2, 
@@ -62,7 +55,6 @@ class DataIngestion:
                 stratify=df['churn'] 
             )
 
-            #  Save the splits to the artifacts folder
             train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
             test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
 

@@ -1,9 +1,0 @@
-[ 2026-04-15 20:58:20,450 ] 171 root - INFO - Data Transformation Started !!!
-[ 2026-04-15 20:58:20,575 ] 178 root - INFO - Reading train and test data completed
-[ 2026-04-15 20:58:20,575 ] 84 root - INFO - Entered the Data tranformer object method.
-[ 2026-04-15 20:58:20,575 ] 88 root - INFO - Starting Pipeline construction with 4 specific lanes
-[ 2026-04-15 20:58:20,575 ] 105 root - INFO - Transformers Initialized
-[ 2026-04-15 20:58:20,575 ] 146 root - INFO - Assembling individual pipelines into ColumnTransformer.
-[ 2026-04-15 20:58:20,575 ] 158 root - INFO - ColumnTransformer object created successfully.
-[ 2026-04-15 20:58:20,583 ] 194 root - INFO - Applying preprocessing object on training and testing dataframes.
-[ 2026-04-15 20:58:20,885 ] 207 root - INFO - Saving train and test arrays to disk...

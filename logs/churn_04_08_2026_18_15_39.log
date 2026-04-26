@@ -1,4 +1,0 @@
-[ 2026-04-08 18:15:39,045 ] 32 root - INFO - Started the Data Ingestion process.
-[ 2026-04-08 18:15:41,274 ] 46 root - INFO - Read the dataset as dataframe from MySQL View
-[ 2026-04-08 18:15:41,747 ] 54 root - INFO - Train test split initiated
-[ 2026-04-08 18:15:42,308 ] 69 root - INFO - Ingestion of the data is completed
