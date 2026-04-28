@@ -9,4 +9,3 @@ sqlalchemy
 mysql-connector-python
 streamlit
 xgboost==3.2.0
--e .
