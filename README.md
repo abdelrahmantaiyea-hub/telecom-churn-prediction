@@ -80,12 +80,12 @@ This system introduces a **VIP Threshold Logic** to prioritize retention budgets
 
 ## ⚙️ Technical Features
 
-✅ **End-to-End ML Architecture:** Fully automated from raw data ingestion to inference.
-✅ **Modular Component Design:** Strict separation of data lifecycle components and execution pipelines.
-✅ **Custom Telemetry:** Centralized custom logging and exception handling tracking system health.
-✅ **Decision Intelligence UI:** Interactive Streamlit dashboard for real-time risk profiling.
-✅ **Containerization:** Dockerized environment ensuring seamless cross-platform deployment.
-✅ **Artifact Management:** Automated serialization and version control of preprocessors and models.
+* ✅ **End-to-End ML Architecture:** Fully automated from raw data ingestion to inference.
+* ✅ **Modular Component Design:** Strict separation of data lifecycle components and execution pipelines.
+* ✅ **Custom Telemetry:** Centralized custom logging and exception handling tracking system health.
+* ✅ **Decision Intelligence UI:** Interactive Streamlit dashboard for real-time risk profiling.
+* ✅ **Containerization:** Dockerized environment ensuring seamless cross-platform deployment.
+* ✅ **Artifact Management:** Automated serialization and version control of preprocessors and models.
 
 ---
 
@@ -110,9 +110,10 @@ To ensure absolute reproducibility across any operating system without dependenc
 **1. Build the Image:**
 ```bash
 docker build -t cell2cell-churn-app .
+```
 
-2. Run the Container:
-
-Bash
-
+**2. Run the Container:**
+```bash
 docker run -p 8501:8501 cell2cell-churn-app
+```
+*The Streamlit dashboard will spin up and be accessible locally at `http://localhost:8501`.*
