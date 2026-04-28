@@ -35,7 +35,7 @@ class PredictPipeline:
             return probability, status, risk, action 
         
         except Exception as e:
-            raise CustomException(sys, e)   
+            raise CustomException(e, sys)   
 
     def get_business_insights(self, probability, monthly_revenue):
     
