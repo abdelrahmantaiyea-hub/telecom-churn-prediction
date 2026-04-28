@@ -1,1 +1,23 @@
+# Environments
 .env
+vh/
+env/
+venv/
+
+# Python execution
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Logs
+logs/
+
+# Build and Distribution
+*.egg-info/
+build/
+dist/
+local_settings.py
+
+# OS-specific
+.DS_Store
+Thumbs.db
