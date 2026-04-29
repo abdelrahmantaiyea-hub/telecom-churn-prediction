@@ -8,13 +8,15 @@ st.set_page_config(page_title="Cell2Cell Churn Predictor", layout="wide", page_i
 st.sidebar.header("📋 Project Background")
 st.sidebar.markdown("""
 ### Context
-*Data from a historical US Telecom (SBC/AT&T).*
+*Core Goal: To identify high-value subscribers—dynamically segmented as the Top 20% by Monthly Revenue—alongside standard customers at risk of leaving.  
+
+Operational Output: The system generates a real-time churn probability, classifies the customer segment (VIP vs. Standard), assigns a risk status (Critical to Low), and provides automated retention recommendations.*
 
 ### Model Logic
-* **VIP Threshold:** $78.92 (80th Percentile)
-* **Metric:** F1-Score Optimized
+Ensemble Method: Utilizes a Soft-Voting Ensemble of Random Forest and XGBoost models to ensure the most accurate probability mapping across different data patterns.  
 
-[PLACEHOLDER: Add your README findings here later!]
+
+Cost-Sensitive Approach: Implements specialized decision thresholds—0.35 for VIPs and 0.50 for Standard—specifically tuned to minimize False Negatives and capture churners before revenue loss occurs.
 """)
 
 # MAIN PAGE
