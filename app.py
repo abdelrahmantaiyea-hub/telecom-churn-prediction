@@ -8,15 +8,16 @@ st.set_page_config(page_title="Cell2Cell Churn Predictor", layout="wide", page_i
 st.sidebar.header("📋 Project Background")
 st.sidebar.markdown("""
 ### Context
-*Core Goal: To identify high-value subscribers—dynamically segmented as the Top 20% by Monthly Revenue—alongside standard customers at risk of leaving.  
+*Goal: Identify high-value churn risks (Top 20% MRR).
 
-Operational Output: The system generates a real-time churn probability, classifies the customer segment (VIP vs. Standard), assigns a risk status (Critical to Low), and provides automated retention recommendations.*
+Output: Real-time probability, Risk Status, and Retention Actions.*
 
 ### Model Logic
-Ensemble Method: Utilizes a Soft-Voting Ensemble of Random Forest and XGBoost models to ensure the most accurate probability mapping across different data patterns.  
+Ensemble: Soft-Voting (RF + XGBoost).
 
+Strategy: Cost-Sensitive thresholds to minimize False Negatives.
 
-Cost-Sensitive Approach: Implements specialized decision thresholds—0.35 for VIPs and 0.50 for Standard—specifically tuned to minimize False Negatives and capture churners before revenue loss occurs.
+Thresholds: 0.35 (VIP) | 0.50 (Standard).
 """)
 
 # MAIN PAGE
